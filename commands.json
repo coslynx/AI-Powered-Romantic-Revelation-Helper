@@ -1,0 +1,7 @@
+{
+  "commands": [
+    "npm install",
+    "npx prisma init --datasource-provider postgresql",
+    "npm run dev"
+  ]
+}
