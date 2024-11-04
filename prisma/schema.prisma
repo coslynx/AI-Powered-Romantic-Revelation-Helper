@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Partner {
+  id        Int      @id @default(auto()) @map("_id")
+  name      String
+  email     String   @unique
+  interests String[]
+  // Additional fields for partner profile:
+  // birthday Date? 
+  // personality String?
+  // ... 
+}
+
+model Recommendation {
+  id           Int      @id @default(auto()) @map("_id")
+  partnerId    Int      @map("partner_id")
+  type        String
+  description String
+  imageUrl    String
+  price       Float
+  location    String? 
+  date        DateTime? 
+  // ... other recommendation fields
+}
+
+// Relationship between Partner and Recommendation
+Recommendation {
+  partner Partner @relation(fields: [partnerId], references: [id])
+}
+
+// Ensure unique partner email addresses
+model Partner {
+  email String @unique
+}
+
+// Optionally add validation to fields for improved data integrity
+// ...
+
+// Example validation rule for price
+model Recommendation {
+  price Float @db.Float @default(0) @map("price") @validate(min: 0)
+}
